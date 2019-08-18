@@ -26,14 +26,18 @@ package com.codenjoy.dojo.a2048.services;
 import com.codenjoy.dojo.a2048.client.Board;
 import com.codenjoy.dojo.a2048.client.ai.AISolver;
 import com.codenjoy.dojo.a2048.model.*;
+import com.codenjoy.dojo.a2048.model.Number;
 import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 import com.codenjoy.dojo.services.multiplayer.MultiplayerType;
+import com.codenjoy.dojo.services.printer.BoardReader;
+import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.settings.Parameter;
 import com.codenjoy.dojo.services.settings.Settings;
+import org.json.JSONObject;
 
 import static com.codenjoy.dojo.services.settings.SimpleParameter.v;
 
@@ -93,5 +97,19 @@ public class GameRunner extends AbstractGameType implements GameType {
     @Override
     public Class<? extends ClientBoard> getBoard() {
         return Board.class;
+    }
+
+    @Override
+    public PrinterFactory getPrinterFactory() {
+        return PrinterFactory.get((BoardReader reader, Player player) -> {
+            JSONObject result = new JSONObject();
+            StringBuilder sb = new StringBuilder();
+            for (Point el: reader.elements() ) {
+                sb.append(((State<Elements, Player>)el).state(null));
+            }
+            result.put("field", sb.toString());
+            result.put("isGameOver", player.isGameOver());
+            return result;
+        });
     }
 }

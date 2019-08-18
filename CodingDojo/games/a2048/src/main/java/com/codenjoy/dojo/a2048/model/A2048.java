@@ -212,13 +212,13 @@ public class A2048 implements Field {
             public Iterable<? extends Point> elements() {
                 return () -> new Iterator<Point>() {
                     private int x = 0;
-                    private int y = 0;
+                    private int y =  A2048.this.size - 1;
                     private Numbers numb = A2048.this.numbers;
                     private int size = A2048.this.size;
 
                     @Override
                     public boolean hasNext() {
-                        return y != size;
+                        return y != -1;
                     }
 
                     @Override
@@ -227,7 +227,7 @@ public class A2048 implements Field {
                         x++;
                         if (x == size) {
                             x = 0;
-                            y++;
+                            y--;
                         }
                         return number;
                     }

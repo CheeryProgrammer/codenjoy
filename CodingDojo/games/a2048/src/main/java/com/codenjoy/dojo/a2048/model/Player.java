@@ -28,6 +28,7 @@ import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 public class Player extends GamePlayer<Hero, Field> {
 
     Hero hero;
+    Field field;
 
     public Player(EventListener listener) {
         super(listener);
@@ -42,10 +43,15 @@ public class Player extends GamePlayer<Hero, Field> {
     public void newHero(Field field) {
         hero = new Hero();
         hero.init(field);
+        this.field = field;
     }
 
     @Override
     public boolean isAlive() {
         return hero != null && hero.isAlive();
+    }
+
+    public boolean isGameOver() {
+        return field.isGameOver();
     }
 }
