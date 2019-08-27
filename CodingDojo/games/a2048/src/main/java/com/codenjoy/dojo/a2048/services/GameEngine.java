@@ -44,7 +44,6 @@ public class GameEngine {
         //settings.getParameter("Mode").type(Integer.class).update(1);
         settings.getParameter("New numbers").type(Integer.class).update(newNumbersCount);
         game = new A2048(level, new RandomDice());
-        game.
     }
 
     public void newGame() {
@@ -72,6 +71,10 @@ public class GameEngine {
                 break;
         }
         game.tick();
+    }
+
+    public int getScore(){
+        return game.getNumbers().getSum();
     }
 
     public boolean isGameOver(){
