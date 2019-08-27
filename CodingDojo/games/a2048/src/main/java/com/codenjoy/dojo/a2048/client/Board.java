@@ -1,5 +1,7 @@
 package com.codenjoy.dojo.a2048.client;
 
+import org.json.JSONObject;
+
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
@@ -22,12 +24,22 @@ package com.codenjoy.dojo.a2048.client;
  * #L%
  */
 
-
 import com.codenjoy.dojo.a2048.model.Elements;
 import com.codenjoy.dojo.client.AbstractBoard;
+import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.services.Direction;
 
 public class Board extends AbstractBoard<Elements> {
+
+    Boolean isGameOver;
+
+    public ClientBoard forString(String boardString) {
+            source = new JSONObject(boardString);
+            isGameOver = source.getBoolean("isGameOver");
+            String field = source.getString("field");
+
+            return forString(new String[]{field});
+    }
 
     @Override
     public Elements valueOf(char ch) {
@@ -64,6 +76,27 @@ public class Board extends AbstractBoard<Elements> {
                     toX = fromX;
                 }
             }
+        }
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("{\n");
+        result.append("  isGameOver = ").append(isGameOver).append(", \n");
+        result.append("  field = {");
+        result.append("\n").append(boardAsString(result, "    |","|"));
+        result.append("  }\n");
+        return result.append("}").toString();
+    }
+    
+    protected StringBuilder boardAsString(StringBuilder result, String prefix, String postfix) {
+        for (int y = 0; y < size; y++) {
+            result.append(prefix);
+            for (int x = 0; x < size; x++) {
+                result.append(field[0][inversionX(x)][inversionY(y)]);
+            }
+            result.append(postfix).append("\n");
         }
         return result;
     }
