@@ -21,20 +21,38 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace A2048.Api
 {
     public class Board
     {
+	    [DataContract]
+	    private class BoardJson
+	    {
+		    [DataMember]
+		    public bool isGameOver { get; set; }
+		    [DataMember]
+		    public string field { get; set; }
+		}
 
-        private String BoardString { get; }
+
+        private BoardJson ParsedBoard { get; }
         private LengthToXY LengthXY;
 
         public Board(String boardString)
         {
-            BoardString = boardString.Replace("\n", "");
-            LengthXY = new LengthToXY(Size);
+	        using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(boardString)))
+	        {
+		        DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(BoardJson));
+		        ParsedBoard = (BoardJson)deserializer.ReadObject(ms);
+				ParsedBoard.field.Replace("\n", "");
+				LengthXY = new LengthToXY(Size);
+			}
         }        
 
         /// <summary>
@@ -44,7 +62,7 @@ namespace A2048.Api
         {
             get
             {
-                return (int)Math.Sqrt(BoardString.Length);
+                return (int)Math.Sqrt(ParsedBoard.field.Length);
             }
         }
 
@@ -59,7 +77,7 @@ namespace A2048.Api
             {
                 return Element.NONE;
             }
-            return (Element)BoardString[LengthXY.GetLength(point.X, point.Y)];
+            return (Element)ParsedBoard.field[LengthXY.GetLength(point.X, point.Y)];
         }
 
         public bool IsAt(Point point, Element element)
@@ -77,7 +95,7 @@ namespace A2048.Api
             string result = "";
             for (int i = 0; i < Size; i++)
             {
-                result += BoardString.Substring(i * Size, Size);
+                result += ParsedBoard.field.Substring(i * Size, Size);
                 result += "\n";
             }
             return result;
@@ -89,9 +107,11 @@ namespace A2048.Api
         public string ToString()
         {
            return string.Format("{0}\n" +
-                    "Barriers at: {1}",
+                    "Barriers at: {1}\n" +
+	                "Is Game Over: {2}",
                     BoardAsString(),
-                    ListToString(GetBarriers()));
+                    ListToString(GetBarriers()),
+                    ParsedBoard.isGameOver);
         }
 
         private string ListToString(List<Point> list)

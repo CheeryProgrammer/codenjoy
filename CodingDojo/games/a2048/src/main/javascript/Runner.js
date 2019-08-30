@@ -39,13 +39,16 @@ var printArray = function (array) {
 };
 
 var processBoard = function(boardString) {
-    var board = new Board(boardString);
+	var parsedBoard = JSON.parse(boardString);
+    var board = new Board(parsedBoard);
     if (!!printBoardOnTextArea) {
         printBoardOnTextArea(board.boardAsString());
     }
 
     var logMessage = board + "\n\n";
-    var answer = new DirectionSolver(board).get().toString();
+	var solver = new DirectionSolver(board);
+    var answer = solver.get().toString();
+	logMessage += "Is Game Over: " + board.checkIsGameOver() + "\n";
     logMessage += "Answer: " + answer + "\n";
     logMessage += "-----------------------------------\n";
 
@@ -277,7 +280,7 @@ var Board = function(board){
     };
 
     var boardSize = function() {
-        return Math.sqrt(board.length);
+        return Math.sqrt(board.field.length);
     };
 
     var size = boardSize();
@@ -308,13 +311,13 @@ var Board = function(board){
         if (pt(x, y).isOutOf(size)) {
             return Elements.BATTLE_WALL;
         }
-        return board.charAt(xyl.getLength(x, y));
+        return board.field.charAt(xyl.getLength(x, y));
     };
 
     var boardAsString = function() {
         var result = "";
         for (var i = 0; i < size; i++) {
-            result += board.substring(i * size, (i + 1) * size);
+            result += board.field.substring(i * size, (i + 1) * size);
             result += "\n";
         }
         return result;
@@ -338,6 +341,10 @@ var Board = function(board){
         }
         return sort(result);
     };
+	
+	var checkIsGameOver = function() {
+		return board.isGameOver;
+	};
 
     var isAnyOfAt = function(x, y, elements) {
         if (pt(x, y).isOutOf(size)) {
@@ -386,7 +393,8 @@ var Board = function(board){
         countNear : countNear,
         isBarrierAt : isBarrierAt,
         getBarriers : getBarriers,
-        getAt : getAt
+        getAt : getAt,
+		checkIsGameOver : checkIsGameOver
     };
 };
 
