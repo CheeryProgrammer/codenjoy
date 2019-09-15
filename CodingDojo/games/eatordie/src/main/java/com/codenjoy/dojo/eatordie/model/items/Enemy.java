@@ -74,7 +74,6 @@ public class Enemy extends PointImpl implements State<Elements, Player>, Tickabl
             goTo = this.direction.change(this.copy());
         } while (!field.isFree(goTo) && !goTo.itsMe(field.getHeroPosition()));
 
-        System.out.println("Move " + this.direction.toString());
         move(goTo);
     }
 

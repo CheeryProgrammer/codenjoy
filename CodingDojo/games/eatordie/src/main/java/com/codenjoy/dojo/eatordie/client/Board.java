@@ -45,12 +45,11 @@ public class Board extends AbstractBoard<Elements> {
     }
 
     public boolean isBarrierAt(int x, int y) {
-        return isAt(x, y, Elements.WALL, Elements.OTHER_HERO);
+        return isAt(x, y, Elements.WALL, Elements.ROCK);
     }
 
-    public Point getMe() {
-        return get(Elements.DEAD_HERO,
-                Elements.HERO_UP, Elements.HERO_RIGHT, Elements.HERO_DOWN, Elements.HERO_LEFT).get(0);
+    public boolean isEnemyAt(int x, int y) {
+        return isAt(x, y, Elements.ENEMY_UP, Elements.ENEMY_RIGHT, Elements.ENEMY_DOWN, Elements.ENEMY_LEFT);
     }
 
     public boolean isAlive() {
@@ -59,10 +58,6 @@ public class Board extends AbstractBoard<Elements> {
 
     public int getCurrentScore(){
         return currentScore;
-    }
-
-    public boolean isEnemyAt(int x, int y) {
-        return isAt(x, y, Elements.ENEMY_UP, Elements.ENEMY_RIGHT, Elements.ENEMY_DOWN, Elements.ENEMY_LEFT);
     }
 
     @Override
