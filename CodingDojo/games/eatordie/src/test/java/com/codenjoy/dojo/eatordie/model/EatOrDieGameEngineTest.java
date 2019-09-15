@@ -70,7 +70,7 @@ public class EatOrDieGameEngineTest {
         game.newGame(player);
         player.hero = hero;
         hero.init(game);
-        this.hero = game.getHeroes().get(0);
+        this.hero = game.getHero();
     }
 
     private void assertE(String expected) {

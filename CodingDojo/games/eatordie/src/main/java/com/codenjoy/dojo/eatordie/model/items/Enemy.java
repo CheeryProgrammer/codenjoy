@@ -73,11 +73,9 @@ public class Enemy extends PointImpl implements State<Elements, Player>, Tickabl
             this.direction = Direction.random();//CalculateNewDirection();
             goTo = this.direction.change(this.copy());
         } while (!field.isFree(goTo) && !goTo.itsMe(field.getHeroPosition()));
-        if(this.direction != null)
-        {
-            System.out.println("Move " + this.direction.toString());
-            move(goTo);
-        }
+
+        System.out.println("Move " + this.direction.toString());
+        move(goTo);
     }
 
     private Direction CalculateNewDirection() {

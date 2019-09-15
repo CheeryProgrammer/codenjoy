@@ -47,7 +47,7 @@ public class EatOrDieGameEngine implements Field {
     private List<Enemy> enemies;
     private List<Rock> rocks;
 
-    private List<Player> players;
+    private Player player;
 
     private final int size;
     private Dice dice;
@@ -59,7 +59,6 @@ public class EatOrDieGameEngine implements Field {
         chests = level.getChests();
         rocks = level.getRocks();
         size = level.getSize();
-        players = new LinkedList<>();
         enemies = new LinkedList<>();
     }
 
@@ -68,41 +67,35 @@ public class EatOrDieGameEngine implements Field {
      */
     @Override
     public void tick() {
-        for (Player player : players) {
-            Hero hero = player.getHero();
-
-            hero.tick();
-
-            if(enemies.isEmpty()){
-                enemies.add(new Enemy(getFreeRandom(), this));
-            }
-            else{
-                enemies.get(0).tick();
-            }
-
-            if (bags.contains(hero)) {
-                bags.remove(hero);
-                player.event(Events.GOT_BAG);
-
-                Point pos = getFreeRandom();
-                bags.add(new Bag(pos));
-            }
-
-            if (chests.contains(hero)) {
-                chests.remove(hero);
-                player.event(Events.GOT_CHEST);
-
-                Point pos = getFreeRandom();
-                chests.add(new Chest(pos));
-            }
+        if(enemies.isEmpty()){
+            enemies.add(new Enemy(getFreeRandom(), this));
+        }
+        else{
+            enemies.get(0).tick();
         }
 
-        for (Player player : players) {
-            Hero hero = player.getHero();
+        Hero hero = player.getHero();
 
-            if (!hero.isAlive()) {
-                player.event(Events.DEAD);
-            }
+        hero.tick();
+
+        if (bags.contains(hero)) {
+            bags.remove(hero);
+            player.event(Events.GOT_BAG);
+
+            Point pos = getFreeRandom();
+            bags.add(new Bag(pos));
+        }
+
+        if (chests.contains(hero)) {
+            chests.remove(hero);
+            player.event(Events.GOT_CHEST);
+
+            Point pos = getFreeRandom();
+            chests.add(new Chest(pos));
+        }
+
+        if (!hero.isAlive()) {
+            player.event(Events.DEAD);
         }
     }
 
@@ -112,7 +105,7 @@ public class EatOrDieGameEngine implements Field {
 
     @Override
     public Point getHeroPosition() {
-        return getHeroes().get(0);
+        return getHero();
     }
 
     @Override
@@ -125,7 +118,7 @@ public class EatOrDieGameEngine implements Field {
                 || y < 0
                 || y > size - 1
                 || walls.contains(pt)
-                || getHeroes().contains(pt);
+                || rocks.contains(pt);
     }
 
     @Override
@@ -136,10 +129,10 @@ public class EatOrDieGameEngine implements Field {
     @Override
     public boolean isFree(Point pt) {
         return !(bags.contains(pt)
+                || chests.contains(pt)
                 || enemies.contains(pt)
                 || walls.contains(pt)
-                || rocks.contains(pt)
-                || getHeroes().contains(pt));
+                || rocks.contains(pt));
     }
 
     @Override
@@ -155,23 +148,21 @@ public class EatOrDieGameEngine implements Field {
         return chests;
     }
 
-    public List<Hero> getHeroes() {
-        return players.stream()
-                .map(Player::getHero)
-                .collect(toList());
+    public Hero getHero() {
+        return player.getHero();
     }
 
     @Override
     public void newGame(Player player) {
-        if (!players.contains(player)) {
-            players.add(player);
+        if(this.player == null){
+            this.player = player;
         }
-        player.newHero(this);
+        this.player.newHero(this);
     }
 
     @Override
     public void remove(Player player) {
-        players.remove(player);
+        this.player = null;
     }
 
     public List<Wall> getWalls() {
@@ -199,8 +190,11 @@ public class EatOrDieGameEngine implements Field {
             @Override
             public Iterable<? extends Point> elements() {
                 Point[][] field = new Point[size][size];
+
+                Hero hero = EatOrDieGameEngine.this.getHero();
+                field[hero.getX()][hero.getY()] = hero;
+
                 fillField(field, EatOrDieGameEngine.this.getWalls());
-                fillField(field, EatOrDieGameEngine.this.getHeroes());
                 fillField(field, EatOrDieGameEngine.this.getBags());
                 fillField(field, EatOrDieGameEngine.this.getChests());
                 fillField(field, EatOrDieGameEngine.this.getEnemies());
