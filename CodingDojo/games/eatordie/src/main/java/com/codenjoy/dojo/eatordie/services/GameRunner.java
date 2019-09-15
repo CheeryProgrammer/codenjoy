@@ -152,7 +152,7 @@ public class GameRunner extends AbstractGameType implements GameType {
             }
             result.put("field", sb.toString());
             result.put("isAlive", player.isAlive());
-            result.put("currentScore", 100);
+            result.put("currentScore", player.getCurrentScore());
             return result;
         });
     }

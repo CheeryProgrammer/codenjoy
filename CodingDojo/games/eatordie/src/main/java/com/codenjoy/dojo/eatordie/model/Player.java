@@ -25,9 +25,6 @@ package com.codenjoy.dojo.eatordie.model;
 
 import com.codenjoy.dojo.eatordie.services.Events;
 import com.codenjoy.dojo.services.EventListener;
-import com.codenjoy.dojo.services.Game;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.multiplayer.GameField;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 
 /**
@@ -37,17 +34,24 @@ import com.codenjoy.dojo.services.multiplayer.GamePlayer;
 public class Player extends GamePlayer<Hero, Field> {
 
     Hero hero;
+    private int currentScore;
 
     public Player(EventListener listener) {
         super(listener);
+        currentScore = 0;
     }
 
     public Hero getHero() {
         return hero;
     }
 
+    public int getCurrentScore(){
+        return currentScore;
+    }
+
     @Override
     public void newHero(Field field) {
+        currentScore = 0;
         hero = new Hero(field.getFreeRandom());
         hero.init(field);
     }
@@ -57,4 +61,14 @@ public class Player extends GamePlayer<Hero, Field> {
         return hero != null && hero.isAlive();
     }
 
+    @Override
+    public void event(Object event) {
+        Events ev = ((Events)event).withCurrentScore(currentScore);
+        if(event.equals(Events.DEAD)) {
+            currentScore = 0;
+        } else {
+            currentScore += ev.getAddition();
+        }
+        super.event(ev.withCurrentScore(currentScore));
+    }
 }

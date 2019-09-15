@@ -28,5 +28,31 @@ package com.codenjoy.dojo.eatordie.services;
  * или, быть может, наоборот - он поднял что-то ценное и ты хочешь ему дать бонус. Вот все все ивенты.
  */
 public enum Events {
-    WIN, LOOSE;
+    GOT_BAG(3),
+    GOT_CHEST(8),
+    DEAD(0);
+
+    private int currentScore;
+    private int score;
+
+    Events(int score){
+        this.score = score;
+    }
+
+    public int getAddition(){
+        int bonus = currentScore / 25;
+        if(this==GOT_CHEST) {
+            bonus *= 3;
+        }
+        return score + bonus;
+    }
+
+    public Events withCurrentScore(int currentScore){
+        this.currentScore = currentScore;
+        return this;
+    }
+
+    public int getCurrentScore() {
+        return this.currentScore;
+    }
 }

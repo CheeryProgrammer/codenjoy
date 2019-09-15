@@ -269,7 +269,7 @@ public class EatOrDieGameEngineTest {
 
         hero.up();
         game.tick();
-        verify(listener).event(Events.LOOSE);
+        verify(listener).event(Events.DEAD);
 
         assertE("☼☼☼☼☼" +
                 "☼   ☼" +
@@ -309,7 +309,7 @@ public class EatOrDieGameEngineTest {
         dice(1, 3);
         hero.right();
         game.tick();
-        verify(listener).event(Events.WIN);
+        verify(listener).event(Events.GOT_BAG);
 
         assertE("☼☼☼☼☼" +
                 "☼$  ☼" +
@@ -351,7 +351,7 @@ public class EatOrDieGameEngineTest {
         dice(2, 2);
         hero.right();
         game.tick();
-        verify(listener).event(Events.WIN);
+        verify(listener).event(Events.GOT_BAG);
 
         assertE("☼☼☼☼☼" +
                 "☼   ☼" +

@@ -39,11 +39,11 @@ public class ScoresTest {
     private Integer winScore;
 
     public void loose() {
-        scores.event(Events.LOOSE);
+        scores.event(Events.DEAD);
     }
 
     public void win() {
-        scores.event(Events.WIN);
+        scores.event(Events.GOT_BAG);
     }
 
     @Before

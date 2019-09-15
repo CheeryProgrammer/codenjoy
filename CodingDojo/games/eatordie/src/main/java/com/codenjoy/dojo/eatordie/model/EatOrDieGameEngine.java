@@ -82,7 +82,7 @@ public class EatOrDieGameEngine implements Field {
 
             if (bags.contains(hero)) {
                 bags.remove(hero);
-                player.event(Events.WIN);
+                player.event(Events.GOT_BAG);
 
                 Point pos = getFreeRandom();
                 bags.add(new Bag(pos));
@@ -90,7 +90,7 @@ public class EatOrDieGameEngine implements Field {
 
             if (chests.contains(hero)) {
                 chests.remove(hero);
-                player.event(Events.WIN);
+                player.event(Events.GOT_CHEST);
 
                 Point pos = getFreeRandom();
                 chests.add(new Chest(pos));
@@ -101,7 +101,7 @@ public class EatOrDieGameEngine implements Field {
             Hero hero = player.getHero();
 
             if (!hero.isAlive()) {
-                player.event(Events.LOOSE);
+                player.event(Events.DEAD);
             }
         }
     }

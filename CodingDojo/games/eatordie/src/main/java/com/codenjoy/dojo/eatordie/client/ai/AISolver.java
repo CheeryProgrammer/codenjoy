@@ -84,7 +84,7 @@ public class AISolver implements Solver<Board> {
         if (!board.isAlive()) return "";
         List<Direction> result = getDirections(board);
         if (result.isEmpty()) return "";
-        return result.get(0).toString() + getBombIfNeeded(board);
+        return result.get(0).toString();
     }
 
     private String getBombIfNeeded(Board board) {
