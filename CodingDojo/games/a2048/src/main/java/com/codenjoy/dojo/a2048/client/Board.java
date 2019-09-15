@@ -100,5 +100,4 @@ public class Board extends AbstractBoard<Elements> {
         }
         return result;
     }
-
 }

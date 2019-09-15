@@ -116,10 +116,19 @@ public class Hero extends PlayerHero<Field> implements State<Elements, Player> {
             return Elements.DEAD_HERO;
         }
 
-        if (this == player.getHero()) {
+        if(direction == null)
+            return Elements.HERO_DOWN;
+
+        switch (direction){
+            case UP: return Elements.HERO_UP;
+            case RIGHT: return Elements.HERO_RIGHT;
+            case DOWN: return Elements.HERO_DOWN;
+            default: return Elements.HERO_LEFT;
+        }
+        /* if (this == player.getHero()) {
             return Elements.HERO_DOWN;
         } else {
             return Elements.OTHER_HERO;
-        }
+        }*/
     }
 }

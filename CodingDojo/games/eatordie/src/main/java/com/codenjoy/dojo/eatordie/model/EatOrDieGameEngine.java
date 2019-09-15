@@ -25,10 +25,7 @@ package com.codenjoy.dojo.eatordie.model;
 
 import com.codenjoy.dojo.eatordie.model.items.*;
 import com.codenjoy.dojo.eatordie.services.Events;
-import com.codenjoy.dojo.services.BoardUtils;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.Point;
-import com.codenjoy.dojo.services.Tickable;
+import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.printer.BoardReader;
 
 import java.util.Collection;
@@ -201,14 +198,31 @@ public class EatOrDieGameEngine implements Field {
 
             @Override
             public Iterable<? extends Point> elements() {
-                return new LinkedList<Point>(){{
-                    addAll(EatOrDieGameEngine.this.getWalls());
-                    addAll(EatOrDieGameEngine.this.getHeroes());
-                    addAll(EatOrDieGameEngine.this.getBags());
-                    addAll(EatOrDieGameEngine.this.getChests());
-                    addAll(EatOrDieGameEngine.this.getEnemies());
-                    addAll(EatOrDieGameEngine.this.getRocks());
-                }};
+                Point[][] field = new Point[size][size];
+                fillField(field, EatOrDieGameEngine.this.getWalls());
+                fillField(field, EatOrDieGameEngine.this.getHeroes());
+                fillField(field, EatOrDieGameEngine.this.getBags());
+                fillField(field, EatOrDieGameEngine.this.getChests());
+                fillField(field, EatOrDieGameEngine.this.getEnemies());
+                fillField(field, EatOrDieGameEngine.this.getRocks());
+
+                List<Point> allElements = new LinkedList<Point>();
+                for (int y = size - 1; y >= 0; y--) {
+                    for (int x = 0; x < size; x++){
+                        if(field[x][y] == null) {
+                            allElements.add(new Empty(x,y));
+                        }
+                        else{
+                            allElements.add(field[x][y]);
+                        }
+                    }
+                }
+                return allElements;
+            }
+
+            private void fillField(Point[][] field, Iterable<? extends Point> points){
+                for (Point p: points)
+                    field[p.getX()][p.getY()] = p;
             }
         };
     }
