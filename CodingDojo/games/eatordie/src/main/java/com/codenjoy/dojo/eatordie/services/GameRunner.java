@@ -52,16 +52,22 @@ public class GameRunner extends AbstractGameType implements GameType {
     }
 
     protected String getMap() {
-        return "☼☼☼☼☼☼☼☼☼☼" +
-                "☼     B  ☼" +
-                "☼   S    ☼" +
-                "☼  R     ☼" +
-                "☼  R   $ ☼" +
-                "☼ C      ☼" +
-                "☼        ☼" +
-                "☼  RR    ☼" +
-                "☼     W  ☼" +
-                "☼☼☼☼☼☼☼☼☼☼";
+        return "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼" +
+                "☼  R  B        ☼" +
+                "☼  RS          ☼" +
+                "☼  R           ☼" +
+                "☼              ☼" +
+                "☼  R   $       ☼" +
+                "☼              ☼" +
+                "☼              ☼" +
+                "☼ C            ☼" +
+                "☼              ☼" +
+                "☼              ☼" +
+                "☼              ☼" +
+                "☼RRRR          ☼" +
+                "☼     W        ☼" +
+                "☼              ☼" +
+                "☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼";
 
 
         /*

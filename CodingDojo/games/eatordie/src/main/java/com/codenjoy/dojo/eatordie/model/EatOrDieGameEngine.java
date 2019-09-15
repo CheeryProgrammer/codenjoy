@@ -52,6 +52,8 @@ public class EatOrDieGameEngine implements Field {
     private final int size;
     private Dice dice;
 
+    private boolean skipEnemyStep;
+
     public EatOrDieGameEngine(Level level, Dice dice) {
         this.dice = dice;
         walls = level.getWalls();
@@ -67,12 +69,9 @@ public class EatOrDieGameEngine implements Field {
      */
     @Override
     public void tick() {
-        if(enemies.isEmpty()){
-            enemies.add(new Enemy(getFreeRandom(), this));
-        }
-        else{
-            enemies.get(0).tick();
-        }
+        skipEnemyStep = !skipEnemyStep;
+        if(player.getCurrentScore() > 30 || skipEnemyStep )
+            enemies.forEach(Enemy::tick);
 
         Hero hero = player.getHero();
 
@@ -96,6 +95,29 @@ public class EatOrDieGameEngine implements Field {
 
         if (!hero.isAlive()) {
             player.event(Events.DEAD);
+        }
+
+        correctDifficulty(player.getCurrentScore());
+    }
+
+    private void correctDifficulty(int currentScore) {
+        if(currentScore < 50){
+            correctEnemiesCount(1);
+            return;
+        }
+        if(currentScore < 100){
+            correctEnemiesCount(2);
+            return;
+        }
+        correctEnemiesCount(3);
+    }
+
+    private void correctEnemiesCount(int desiredCount){
+        while(enemies.size() < desiredCount) {
+            enemies.add(new Enemy(getFreeRandom(), this));
+        }
+        while(enemies.size() > desiredCount) {
+            enemies.remove(enemies.size() - 1);
         }
     }
 
