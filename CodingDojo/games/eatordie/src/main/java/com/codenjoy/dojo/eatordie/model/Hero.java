@@ -38,6 +38,7 @@ public class Hero extends PlayerHero<Field> implements State<Elements, Player> {
 
     private boolean alive;
     private Direction direction;
+    private Direction wentInDirection;
 
     public Hero(Point xy) {
         super(xy);
@@ -105,6 +106,7 @@ public class Hero extends PlayerHero<Field> implements State<Elements, Player> {
                 move(to);
             }
         }
+        wentInDirection = direction;
         direction = null;
     }
 
@@ -118,10 +120,10 @@ public class Hero extends PlayerHero<Field> implements State<Elements, Player> {
             return Elements.DEAD_HERO;
         }
 
-        if(direction == null)
+        if(wentInDirection == null)
             return Elements.HERO_DOWN;
 
-        switch (direction){
+        switch (wentInDirection){
             case UP: return Elements.HERO_UP;
             case RIGHT: return Elements.HERO_RIGHT;
             case DOWN: return Elements.HERO_DOWN;
