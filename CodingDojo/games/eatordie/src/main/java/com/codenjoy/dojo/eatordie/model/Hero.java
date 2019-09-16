@@ -81,6 +81,8 @@ public class Hero extends PlayerHero<Field> implements State<Elements, Player> {
     @Override
     public void act(int... p) {
         if (!alive) return;
+
+        alive = false;
     }
 
     @Override
