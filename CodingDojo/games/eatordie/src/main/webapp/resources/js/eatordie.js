@@ -594,7 +594,7 @@ function initCanvasesGame(contextPath, players, allPlayersScreen,
 
             drawBoard(getBoardDrawer(canvas, playerName, data, allPlayersScreen));
 
-            $("#score_" + toId(playerName)).text(data.score);
+            $("#score_" + toId(playerName)).text(data.board.currentScore + "/" + data.score);
 
             showScoreInformation(playerName, data.info);
 
