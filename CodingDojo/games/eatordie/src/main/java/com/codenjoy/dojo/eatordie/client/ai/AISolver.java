@@ -51,10 +51,10 @@ public class AISolver implements Solver<Board> {
         this.way = new DeikstraFindWay();
     }
 
-    public DeikstraFindWay.Possible possible(final Board board) {
+    public DeikstraFindWay.Possible possible(Board board) {
         return new DeikstraFindWay.Possible() {
             @Override
-            public boolean possible(Point from, Direction where) {
+            public boolean possible(Point from, final Direction where) {
                 int x = from.getX();
                 int y = from.getY();
                 if (board.isBarrierAt(x, y)) return false;
@@ -84,16 +84,10 @@ public class AISolver implements Solver<Board> {
         if (!board.isAlive()) return "";
         List<Direction> result = getDirections(board);
         if (result.isEmpty()) return "";
-        return result.get(0).toString();
-    }
-
-    private String getBombIfNeeded(Board board) {
-        Point me = board.getMe();
-        if (me.getX() % 2 == 0 && me.getY() % 2 == 0) {
-            return ", ACT";
-        } else {
-            return "";
-        }
+        Direction toGo = result.get(0);
+        if(toGo == Direction.UP || toGo == Direction.DOWN)
+            toGo = toGo.inverted();
+        return toGo.toString();
     }
 
     public List<Direction> getDirections(Board board) {
@@ -103,7 +97,7 @@ public class AISolver implements Solver<Board> {
         }
 
         Point from = board.getMe();
-        List<Point> to = board.get(Elements.BAG);
+        List<Point> to = board.get(Elements.CHEST);
         DeikstraFindWay.Possible map = possible(board);
         return way.getShortestWay(size, from, to, map);
     }
