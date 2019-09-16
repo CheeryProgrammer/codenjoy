@@ -44,6 +44,11 @@ public class Board extends AbstractBoard<Elements> {
         return Elements.valueOf(ch);
     }
 
+    public Point getMe() {
+        return get(Elements.DEAD_HERO,
+                Elements.HERO_UP, Elements.HERO_RIGHT, Elements.HERO_DOWN, Elements.HERO_LEFT).get(0);
+    }
+
     public boolean isBarrierAt(int x, int y) {
         return isAt(x, y, Elements.WALL, Elements.ROCK);
     }
