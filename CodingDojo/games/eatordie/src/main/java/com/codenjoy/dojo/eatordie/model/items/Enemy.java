@@ -26,9 +26,10 @@ package com.codenjoy.dojo.eatordie.model.items;
 import com.codenjoy.dojo.eatordie.model.Elements;
 import com.codenjoy.dojo.eatordie.model.Field;
 import com.codenjoy.dojo.eatordie.model.Player;
-import com.codenjoy.dojo.eatordie.utils.Dijkstra;
 import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.algs.DeikstraFindWay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,17 +38,20 @@ import java.util.List;
 public class Enemy extends PointImpl implements State<Elements, Player>, Tickable {
 
     private final Field field;
+    private final DeikstraFindWay way;
     private Direction direction;
 
     public Enemy(int x, int y, Field field) {
         super(x, y);
         this.field = field;
+        this.way = new DeikstraFindWay();
     }
 
     public Enemy(Point point, Field field) {
         super(point);
         this.field = field;
         direction = Direction.random();
+        this.way = new DeikstraFindWay();
     }
 
     @Override
@@ -69,19 +73,46 @@ public class Enemy extends PointImpl implements State<Elements, Player>, Tickabl
     @Override
     public void tick() {
         Point goTo = null;
-        do {
-            this.direction = Direction.random();//CalculateNewDirection();
+        List<Direction> directions = getDirections();
+        if(directions != null && directions.size() > 0) {
+            this.direction = directions.get(0);
             goTo = this.direction.change(this.copy());
-        } while (!field.isFree(goTo) && !goTo.itsMe(field.getHeroPosition()));
-
-        move(goTo);
+            move(goTo);
+        }
     }
 
-    private Direction CalculateNewDirection() {
-        List<Direction> way = new Dijkstra().findWay(this.copy(), field.getHeroPosition().copy(), field);
-        System.out.println("Way length is: " + way.size());
-        if(way.size() > 0)
-            return way.get(way.size() - 1);
-        return null;
+    public List<Direction> getDirections() {
+        int size = field.size();
+
+        Point from = this;
+        List<Point> to = new ArrayList<>();
+        to.add(field.getHeroPosition());
+        DeikstraFindWay.Possible map = possible(field);
+        return way.getShortestWay(size, from, to, map);
+    }
+
+    private DeikstraFindWay.Possible possible(Field field) {
+        return new DeikstraFindWay.Possible() {
+            @Override
+            public boolean possible(Point from, final Direction where) {
+                if (field.isBarrier(from)) return false;
+
+                Point newPt = where.change(from);
+                int nx = newPt.getX();
+                int ny = newPt.getY();
+
+                if(nx < 0 || nx >= field.size() || ny < 0 || ny >= field.size())
+                    return false;
+
+                if (field.isBarrier(newPt)) return false;
+
+                return true;
+            }
+
+            @Override
+            public boolean possible(Point atWay) {
+                return true;
+            }
+        };
     }
 }

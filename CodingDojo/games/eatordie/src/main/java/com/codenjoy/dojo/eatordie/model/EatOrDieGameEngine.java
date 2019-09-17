@@ -154,7 +154,8 @@ public class EatOrDieGameEngine implements Field {
                 || chests.contains(pt)
                 || enemies.contains(pt)
                 || walls.contains(pt)
-                || rocks.contains(pt));
+                || rocks.contains(pt)
+                || (getHeroPosition() != null && getHeroPosition().itsMe(pt)));
     }
 
     @Override
