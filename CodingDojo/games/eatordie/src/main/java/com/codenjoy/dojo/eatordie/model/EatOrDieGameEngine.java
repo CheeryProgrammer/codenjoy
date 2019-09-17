@@ -213,14 +213,14 @@ public class EatOrDieGameEngine implements Field {
             public Iterable<? extends Point> elements() {
                 Point[][] field = new Point[size][size];
 
-                Hero hero = EatOrDieGameEngine.this.getHero();
-                field[hero.getX()][hero.getY()] = hero;
-
                 fillField(field, EatOrDieGameEngine.this.getWalls());
                 fillField(field, EatOrDieGameEngine.this.getBags());
                 fillField(field, EatOrDieGameEngine.this.getChests());
                 fillField(field, EatOrDieGameEngine.this.getEnemies());
                 fillField(field, EatOrDieGameEngine.this.getRocks());
+
+                Hero hero = EatOrDieGameEngine.this.getHero();
+                field[hero.getX()][hero.getY()] = hero;
 
                 List<Point> allElements = new LinkedList<Point>();
                 for (int y = size - 1; y >= 0; y--) {
