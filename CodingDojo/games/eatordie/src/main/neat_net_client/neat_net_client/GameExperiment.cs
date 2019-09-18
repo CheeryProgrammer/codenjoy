@@ -69,6 +69,25 @@ namespace neat_net_client
             get { return _populationSize; }
         }
 
+        /// <summary>
+        /// Load a population of genomes from an XmlReader and returns the genomes in a new list.
+        /// The genome factory for the genomes can be obtained from any one of the genomes.
+        /// </summary>
+        public List<NeatGenome> LoadPopulation(XmlReader xr)
+        {
+            NeatGenomeFactory genomeFactory = (NeatGenomeFactory)CreateGenomeFactory();
+            return NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, genomeFactory);
+        }
+
+        /// <summary>
+        /// Save a population of genomes to an XmlWriter.
+        /// </summary>
+        public void SavePopulation(XmlWriter xw, IList<NeatGenome> genomeList)
+        {
+            // Writing node IDs is not necessary for NEAT.
+            NeatGenomeXmlIO.WriteComplete(xw, genomeList, false);
+        }
+
         public void Initialize(string name, XmlElement xmlConfig, NeuroSolver solver)
         {
             _name = name;
@@ -86,12 +105,6 @@ namespace neat_net_client
             _neatGenomeParams.FeedforwardOnly = _activationScheme.AcyclicNetwork;
             _neatGenomeParams.ActivationFn = LeakyReLU.__DefaultInstance;
             _solver = solver;
-        }
-
-        public List<NeatGenome> LoadPopulation(XmlReader xr)
-        {
-            NeatGenomeFactory genomeFactory = (NeatGenomeFactory)CreateGenomeFactory();
-            return NeatGenomeXmlIO.ReadCompleteGenomeList(xr, false, genomeFactory);
         }
 
         public IGenomeFactory<NeatGenome> CreateGenomeFactory()
