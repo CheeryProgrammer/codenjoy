@@ -1,0 +1,149 @@
+<!--
+  #%L
+  Codenjoy - it's a dojo-like platform from developers to developers.
+  %%
+  Copyright (C) 2018 Codenjoy
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  #L%
+  -->
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>TreasureHunt codenjoy — как играть? | Игры на работе</title>
+    <link href="../css/all.min.css" media="all" type="text/css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+
+    <script src="../js/all.min.js"></script>
+</head>
+<body style="background-color: white;"
+      class="single single-post postid-170 single-format-standard logged-in admin-bar singular one-column content customize-support">
+<div id="settings" page="rules"></div>
+<a target="_blank" href="https://github.com/codenjoyme/codenjoy"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 100;" src="../../resources/img/fork-me.png" alt="Fork me on GitHub"></a>
+<div id="page" class="hfeed">
+    <div id="main">
+        <div id="primary">
+            <div id="content" role="main">
+                <header class="entry-header">
+                    <h1 class="entry-title">TreasureHunt codenjoy — как играть?</h1>
+                </header>
+
+                <div class="entry-content">
+                    <div class="page-restrict-output">
+                        <p>Игра создана <a href="mailto:Sergey_Voroshilin@epam.com">Сергеем Ворошилиным</a> и <a href="mailto:Vladimir_Smirnov@epam.com">Владимиром Смирновым.</a> Спасибо Авторам за идею.</p>
+
+                        <p>Игра с открытым исходным кодом. Для реализации своей игры, исправления
+                            ошибок в текущей и внесения других правок необходимо для начала
+                            <a href="https://github.com/codenjoyme/codenjoy">форкнуть проект</a>.
+                            В корне репозитория есть описание в файле Readme.md - там описано, что делать дальше.</p>
+
+                        <p>По возникающим вопросам, пиши в <a href="skype:sergey_voroshilin">skype:sergey_voroshilin</a>
+                            или <a href="skype:vladimir_smirnov86">skype:vladimir_smirnov86</a></p>
+
+                        <h2>В чем суть игры?</h2>
+
+                        <p>Вам предстоит играть за охотника за сокровищами, который попал в замкнутую комнату, полную сокровищ. Однако в ней же присутствуют охранники, которые стремятся поймать персонажа игрока, чтобы не дать ему собрать их сокровища. Как только охранники настигают персонажа - он умирает.</p>
+
+						<p>Основная цель - собрать как можно больше сокровищ за одну жизнь.</p>
+						
+                        <p>Очки рассчитываются как сумма всех очков, полученных за сбор сокровищ. Очки за сокровища начисляются по следующим правилам - цена мешочка - 3 очка, цена сундука - 8 очков, при достижении каждых 25 очков стоимость мешочка увеличивается на 1, сундука на 3</p>
+						
+						<p>В зачёт игроку идёт максимальное число набранных очков за все сыгранные партии. Партия длится одну жизнь персонажа.</p>
+						
+						<p>Помимо персонажа игрока, охранников, мешочков и сундуков на поле также расположены камни. На камни заходить нельзя никому - ни персонажу игрока, ни охранникам. Идентичное правило относительно стен уровня.</p>
+
+                        <p>Побеждает игрок с большим числом очков при финальном запуске (в отведённые временные рамки во время финала).</p>
+
+                        <p>Итак, игрок <a href="register?gameName=TreasureHunt">
+                            регистрируется на сервере</a>, указывая свой email</p>
+
+                        <p>Далее необходимо подключиться <a href="resources/user/TreasureHunt-servers.zip">из кода</a>
+                            к серверу через вебсокеты. Там представлены клиенты на трёх языках - C#, Java, Python. В них уже реализована логика подключения к серверу по веб сокетам.</p>
+
+                        <p>Адрес для подключения к игре на сервере http://codenjoy.com:</p>
+
+                        <pre>ws://codenjoy.com:80/codenjoy-contest/ws?user=3edq63tw0bq4w4iem7nb&code=12345678901234567890</pre>
+
+                        <p>Адрес для подключения к игре на сервере, развернутом в локальной сети:</p>
+
+                        <pre>ws://server_ip:8080/codenjoy-contest/ws?user=3edq63tw0bq4w4iem7nb&code=12345678901234567890</pre>
+
+                        <p>Тут 'user' - id игрока, a 'code' - твой security token, его ты можешь получить из адресной
+                            строки браузера после регистрации/логина</p>
+
+                        <p>После подключения к боевому серверу клиент будет регулярно получать строку
+                            символов — с закодированным состоянием поля. Формат таков</p>
+
+                        <pre>^board=(.*)$</pre>
+
+                        <p>с помощью этого regexp можно выкусить строку доски. Вот пример строки от сервера:</p>
+
+                        <pre>{currentScore:0, isAlive:true, field:'☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼  R  B        ☼☼  R           ☼☼  R           ☼☼              ☼☼  R   $       ☼☼              ☼☼              ☼☼        S     ☼☼              ☼☼              ☼☼              ☼☼RRRR          ☼☼              ☼☼              ☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼'}</pre>
+
+						<p>В поле isAlive хранится флаг, указывающий на то, жив ли ещё персонаж героя.</p>
+						
+                        <p>Игровое поле хранится внутри field. Длина строки равна площади поля (N*N). Если вставить символ переноса
+                            строки каждые N символов, то получится читабельное изображение поля.
+                            Координата [0,0] соответствует левому нижнему углу.</p>
+
+                        <pre>
+☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼
+☼  R  B        ☼
+☼  R           ☼
+☼  R           ☼
+☼          v   ☼
+☼ ^R   $       ☼
+☼              ☼
+☼              ☼
+☼        S     ☼
+☼              ☼
+☼              ☼
+☼              ☼
+☼RRRR          ☼
+☼              ☼
+☼              ☼
+☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼☼</pre>
+                        <p>Расшифровка символов</p>
+
+                        <pre>_☼('☼') - стена
+_R('R') - камень
+_4('v') - враг, идёт вниз
+_8('&gt;') - враг, идёт вправо
+_16('&lt;') - враг, идёт влево
+_32('^') - враг, идёт вверх
+NONE(' ') - пустое поле
+_$('$') - мешочек с золотом
+_B('B') - сундук с золотом
+_S('S') - персонаж игрока
+</pre>
+
+						<p>Помимо клиентов также подготовлен сервлет для того, чтобы можно было развернуть локальный игровой сервер. Запускать его необходимо из консоли через запуск startup.bat.</p>
+						
+                        <p>Игра на боевом сервере пошаговая, каждую секунду сервер посылает твоему клиенту
+                            (нейронной сети) состояние обновленного поля на текущий момент и ожидает
+                            ответа команды. За следующую секунду игрок должен успеть
+                            дать команду. Если не успел — персонаж героя остаётся на месте.</p>
+
+                        <p>Первая задача – обучить нейронную сеть играть в эту игру с помощью локального сервера. Для python клиента есть возможность работать напрямую с классами из java, отвечающими за игру, без установки локального сервера и общения с ним через websocket. Если вы хотите - вы можете в java, c# тоже работать напрямую с классами в памяти, но это будет необходимо настроить вам самим.</p>
+						
+						<p>В тех клиентах, которые вам предоставлены, уже реализована базовая логика по обучению нейронной сети играть в представленную выше игру с использованием алгоритма Neat. Если вы хотите - вы можете использовать любой другой язык и любой другой алгоритм для обучения нейронной сети. Предоставленные клиенты вы также можете переделывать так, как вам хочется. Основная цель - обучить нейронную сеть, чтобы она могла играть на боевом сервере. К участию в финале допускаются только клиенты, построенные на нейронных сетях.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
