@@ -510,7 +510,7 @@
             </dependencies>
         </profile>
         <profile>
-            <id>eatordie</id>
+            <id>treasurehunt</id>
             <activation>
                 <property>
                     <name>allGames</name>
@@ -519,7 +519,7 @@
             <dependencies>
                 <dependency>
                     <groupId>${project.groupId}</groupId>
-                    <artifactId>eatordie-engine</artifactId>
+                    <artifactId>treasurehunt-engine</artifactId>
                     <version>${project.version}</version>
                 </dependency>
             </dependencies>

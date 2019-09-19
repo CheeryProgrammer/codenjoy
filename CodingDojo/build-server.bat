@@ -1,6 +1,6 @@
 set ROOT=%CD%
 
-set GAMES_TO_RUN=eatordie
+set GAMES_TO_RUN=treasurehunt
 
 IF "%GAMES_TO_RUN%"=="" (
     call %ROOT%\mvnw clean install -DskipTests
