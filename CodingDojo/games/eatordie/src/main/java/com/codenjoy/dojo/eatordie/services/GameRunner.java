@@ -35,6 +35,8 @@ import com.codenjoy.dojo.services.multiplayer.MultiplayerType;
 import com.codenjoy.dojo.services.printer.BoardReader;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.settings.Parameter;
+import com.codenjoy.dojo.services.settings.Settings;
+import com.codenjoy.dojo.services.settings.SettingsImpl;
 import org.json.JSONObject;
 
 import static com.codenjoy.dojo.services.settings.SimpleParameter.v;
@@ -48,7 +50,7 @@ public class GameRunner extends AbstractGameType implements GameType {
 
     public GameRunner() {
         new Scores(0, settings);
-        level = new LevelImpl(getMap());
+        level = new LevelImpl(getMap(), settings);
     }
 
     protected String getMap() {
@@ -59,8 +61,8 @@ public class GameRunner extends AbstractGameType implements GameType {
                 "☼              ☼" +
                 "☼  R   $       ☼" +
                 "☼              ☼" +
-                "☼              ☼" +
-                "☼ C            ☼" +
+                "☼       R      ☼" +
+                "☼ C    R       ☼" +
                 "☼              ☼" +
                 "☼              ☼" +
                 "☼              ☼" +
@@ -141,6 +143,14 @@ public class GameRunner extends AbstractGameType implements GameType {
     @Override
     public MultiplayerType getMultiplayerType() {
         return MultiplayerType.SINGLE;
+    }
+
+    @Override
+    protected SettingsImpl createSettings() {
+        SettingsImpl s = new SettingsImpl();
+        s.addEditBox("Chests count").type(Integer.class).def(2);
+        s.addEditBox("Bags count").type(Integer.class).def(3);
+        return s;
     }
 
     @Override

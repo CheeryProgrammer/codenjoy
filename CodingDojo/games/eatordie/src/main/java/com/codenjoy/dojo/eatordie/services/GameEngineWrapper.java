@@ -24,6 +24,8 @@ package com.codenjoy.dojo.eatordie.services;
 
 import com.codenjoy.dojo.eatordie.model.*;
 import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.settings.Settings;
+import com.codenjoy.dojo.services.settings.SettingsImpl;
 
 public class GameEngineWrapper {
     private final EatOrDieGameEngine game;
@@ -33,7 +35,10 @@ public class GameEngineWrapper {
 
 
     public GameEngineWrapper(){
-        this.level = new LevelImpl(getMap());
+        SettingsImpl s = new SettingsImpl();
+        s.addEditBox("Chests count").type(Integer.class).def(2);
+        s.addEditBox("Bags count").type(Integer.class).def(3);
+        this.level = new LevelImpl(getMap(), s);
         this.dice = new RandomDice();
         this.game = new EatOrDieGameEngine(level, dice);
         this.player = new Player(new EventListener() {
@@ -52,8 +57,8 @@ public class GameEngineWrapper {
                 "☼              ☼" +
                 "☼  R   $       ☼" +
                 "☼              ☼" +
-                "☼              ☼" +
-                "☼ C            ☼" +
+                "☼       R      ☼" +
+                "☼ C    R       ☼" +
                 "☼              ☼" +
                 "☼              ☼" +
                 "☼              ☼" +

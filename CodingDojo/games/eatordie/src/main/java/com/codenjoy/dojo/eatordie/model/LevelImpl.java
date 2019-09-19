@@ -29,6 +29,9 @@ import com.codenjoy.dojo.eatordie.model.items.Rock;
 import com.codenjoy.dojo.eatordie.model.items.Wall;
 import com.codenjoy.dojo.services.LengthToXY;
 import com.codenjoy.dojo.services.Point;
+import com.codenjoy.dojo.services.settings.Parameter;
+import com.codenjoy.dojo.services.settings.Settings;
+import com.codenjoy.dojo.services.settings.SettingsImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,12 +44,18 @@ import static java.util.stream.Collectors.toList;
  */
 public class LevelImpl implements Level {
     private final LengthToXY xy;
+    private final Settings settings;
+    private final Parameter<Integer> bagsCount;
+    private final Parameter<Integer> chestsCount;
 
     private String map;
 
-    public LevelImpl(String map) {
+    public LevelImpl(String map, Settings settings) {
         this.map = map;
         xy = new LengthToXY(getSize());
+        this.settings = settings;
+        bagsCount = settings.getParameter("Bags count").type(Integer.class);
+        chestsCount = settings.getParameter("Chests count").type(Integer.class);
     }
 
     @Override
@@ -88,6 +97,16 @@ public class LevelImpl implements Level {
         return pointsOf(ROCK).stream()
                 .map(Rock::new)
                 .collect(toList());
+    }
+
+    @Override
+    public int getChestsCount() {
+        return chestsCount.getValue();
+    }
+
+    @Override
+    public int getBagsCount() {
+        return bagsCount.getValue();
     }
 
     private List<Point> pointsOf(Elements element) {

@@ -30,6 +30,7 @@ import com.codenjoy.dojo.services.Game;
 import com.codenjoy.dojo.services.multiplayer.Single;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.services.printer.PrinterFactoryImpl;
+import com.codenjoy.dojo.services.settings.SettingsImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,13 +53,16 @@ public class SingleTest {
     // появляется другие игроки, игра становится мультипользовательской
     @Before
     public void setup() {
+        SettingsImpl s = new SettingsImpl();
+        s.addEditBox("Chests count").type(Integer.class).def(0);
+        s.addEditBox("Bags count").type(Integer.class).def(0);
         Level level = new LevelImpl(
                 "☼☼☼☼☼☼" +
                 "☼   $☼" +
                 "☼    ☼" +
                 "☼    ☼" +
                 "☼    ☼" +
-                "☼☼☼☼☼☼");
+                "☼☼☼☼☼☼", s);
 
         dice = mock(Dice.class);
         field = new EatOrDieGameEngine(level, dice);

@@ -49,4 +49,8 @@ public interface Level {
     List<Chest> getChests();
 
     List<Rock> getRocks();
+
+    int getChestsCount();
+
+    int getBagsCount();
 }

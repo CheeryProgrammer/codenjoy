@@ -52,6 +52,8 @@ public class EatOrDieGameEngine implements Field {
     private final int size;
     private Dice dice;
 
+    private Level level;
+
     private boolean skipEnemyStep;
 
     public EatOrDieGameEngine(Level level, Dice dice) {
@@ -62,6 +64,7 @@ public class EatOrDieGameEngine implements Field {
         rocks = level.getRocks();
         size = level.getSize();
         enemies = new LinkedList<>();
+        this.level = level;
     }
 
     /**
@@ -80,17 +83,27 @@ public class EatOrDieGameEngine implements Field {
         if (bags.contains(hero)) {
             bags.remove(hero);
             player.event(Events.GOT_BAG);
+        }
 
-            Point pos = getFreeRandom();
-            bags.add(new Bag(pos));
+        int bagsCount = this.level.getBagsCount();
+        while(bags.size() != bagsCount) {
+            if(bags.size() < bagsCount)
+                bags.add(new Bag(getFreeRandom()));
+            else
+                bags.remove(bags.size() - 1);
         }
 
         if (chests.contains(hero)) {
             chests.remove(hero);
             player.event(Events.GOT_CHEST);
+        }
 
-            Point pos = getFreeRandom();
-            chests.add(new Chest(pos));
+        int chestsCount = this.level.getChestsCount();
+        while(chests.size() != chestsCount) {
+            if(chests.size() < chestsCount)
+                chests.add(new Chest(getFreeRandom()));
+            else
+                chests.remove(chests.size() - 1);
         }
 
         if (!hero.isAlive()) {

@@ -24,6 +24,7 @@ package com.codenjoy.dojo.eatordie.model;
 
 
 import com.codenjoy.dojo.services.printer.PrinterFactory;
+import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.utils.TestUtils;
 import com.codenjoy.dojo.eatordie.services.Events;
 import com.codenjoy.dojo.services.Dice;
@@ -61,7 +62,10 @@ public class EatOrDieGameEngineTest {
     }
 
     private void givenFl(String board) {
-        LevelImpl level = new LevelImpl(board);
+        SettingsImpl s = new SettingsImpl();
+        s.addEditBox("Chests count").type(Integer.class).def(0);
+        s.addEditBox("Bags count").type(Integer.class).def(0);
+        LevelImpl level = new LevelImpl(board, s);
         Hero hero = level.getHero().get(0);
 
         game = new EatOrDieGameEngine(level, dice);
