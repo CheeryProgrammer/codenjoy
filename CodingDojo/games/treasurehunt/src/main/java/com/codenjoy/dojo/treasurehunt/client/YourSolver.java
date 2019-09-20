@@ -1,5 +1,11 @@
 package com.codenjoy.dojo.treasurehunt.client;
 
+import static com.codenjoy.dojo.services.Direction.DOWN;
+import static com.codenjoy.dojo.services.Direction.RIGHT;
+
+import com.codenjoy.dojo.client.Solver;
+import com.codenjoy.dojo.client.WebSocketRunner;
+
 /*-
  * #%L
  * Codenjoy - it's a dojo-like platform from developers to developers.
@@ -22,42 +28,33 @@ package com.codenjoy.dojo.treasurehunt.client;
  * #L%
  */
 
-
 import com.codenjoy.dojo.services.Direction;
-import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.client.WebSocketRunner;
-import com.codenjoy.dojo.services.Dice;
-import com.codenjoy.dojo.services.RandomDice;
 
 /**
  * User: your name
- * Это твой алгоритм AI для игры. Реализуй его на свое усмотрение.
- * Обрати внимание на {@see YourSolverTest} - там приготовлен тестовый
- * фреймворк для тебя.
  */
 public class YourSolver implements Solver<Board> {
 
-    private Dice dice;
-    private Board board;
-
-    public YourSolver(Dice dice) {
-        this.dice = dice;
-    }
+    boolean b;
+    boolean isFinished = false;
 
     @Override
     public String get(Board board) {
-        this.board = board;
-        if (!board.isAlive()) return "";
+        //Direction.ACT;
 
-        return Direction.UP.toString();
+        b = !b;
+        Direction direction = b ? DOWN : RIGHT;
+        return direction.toString();
     }
 
     public static void main(String[] args) {
         WebSocketRunner.runClient(
-                // paste here board page url from browser after registration
-                "http://localhost:8080/codenjoy-contest/board/player/40dodggxfkr6u2yei1ei?code=3380429022894275777",
-                new YourSolver(new RandomDice()),
+                "http://localhost:8080/codenjoy-contest/board/player/quriyqkxsa6923cqr6li?code=1345206823804532213",
+                //"http://epruryaw0537.moscow.epam.com:23345/codenjoy-contest/board/player/quriyqkxsa6923cqr6li?code=1345206823804532213",
+                new YourSolver(),
                 new Board());
     }
+
+
 
 }

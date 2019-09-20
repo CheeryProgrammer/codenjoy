@@ -24,7 +24,6 @@ package com.codenjoy.dojo.treasurehunt.client.ai;
 
 
 import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.treasurehunt.client.Board;
 import com.codenjoy.dojo.treasurehunt.model.Elements;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Direction;
@@ -41,7 +40,7 @@ import java.util.List;
  * {@see Dice} что приходит через конструктор).
  * Для его запуска воспользуйся методом {@see ApofigSolver#main}
  */
-public class AISolver implements Solver<Board> {
+public class AISolver implements Solver<AiBoard> {
 
     private DeikstraFindWay way;
     private Dice dice;
@@ -51,7 +50,7 @@ public class AISolver implements Solver<Board> {
         this.way = new DeikstraFindWay();
     }
 
-    public DeikstraFindWay.Possible possible(Board board) {
+    public DeikstraFindWay.Possible possible(AiBoard board) {
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point from, final Direction where) {
@@ -80,7 +79,7 @@ public class AISolver implements Solver<Board> {
     }
 
     @Override
-    public String get(final Board board) {
+    public String get(final AiBoard board) {
         if (!board.isAlive()) return "";
         List<Direction> result = getDirections(board);
         if (result.isEmpty()) return "";
@@ -90,7 +89,7 @@ public class AISolver implements Solver<Board> {
         return toGo.toString();
     }
 
-    public List<Direction> getDirections(Board board) {
+    public List<Direction> getDirections(AiBoard board) {
         int size = board.size();
         if (enemiesNear(board)) {
             return Arrays.asList(Direction.random(dice));
@@ -103,7 +102,7 @@ public class AISolver implements Solver<Board> {
     }
 
     // TODO fix Deikstra find way
-    private boolean enemiesNear(Board board) {
+    private boolean enemiesNear(AiBoard board) {
         Point me = board.getMe();
         Point atLeft = Direction.LEFT.change(me);
         Point atRight = Direction.RIGHT.change(me);
