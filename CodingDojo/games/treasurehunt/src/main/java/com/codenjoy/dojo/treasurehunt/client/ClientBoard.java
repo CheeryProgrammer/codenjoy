@@ -25,16 +25,15 @@ import org.json.JSONObject;
  */
 
 import com.codenjoy.dojo.client.AbstractBoard;
-import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.services.Direction;
 
-public class Board extends AbstractBoard<Elements> {
+public class ClientBoard extends AbstractBoard<Elements> {
 
     Boolean isAlive;
     String boardString;
     int currentScore;
 
-    public ClientBoard forString(String boardString) {
+    public com.codenjoy.dojo.client.ClientBoard forString(String boardString) {
         this.boardString = boardString;
         source = new JSONObject(boardString);
         isAlive = source.getBoolean("isAlive");
@@ -122,7 +121,7 @@ public class Board extends AbstractBoard<Elements> {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Board other = (Board) obj;
+        ClientBoard other = (ClientBoard) obj;
         if (getBoardString() == null) {
             if (other.getBoardString() != null)
                 return false;

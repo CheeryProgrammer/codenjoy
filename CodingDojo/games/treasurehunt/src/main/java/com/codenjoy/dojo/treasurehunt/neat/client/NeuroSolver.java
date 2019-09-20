@@ -4,7 +4,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.client.WebSocketRunner;
-import com.codenjoy.dojo.treasurehunt.client.Board;
+import com.codenjoy.dojo.treasurehunt.client.ClientBoard;
 import com.codenjoy.dojo.treasurehunt.client.Elements;
 
 /*-
@@ -35,7 +35,7 @@ import com.evo.NEAT.Genome;
 /**
  * User: your name
  */
-public class NeuroSolver implements Solver<Board> {
+public class NeuroSolver implements Solver<ClientBoard> {
     private static final int MAX_LIFE = 50;
 
     private Genome gene;
@@ -53,7 +53,7 @@ public class NeuroSolver implements Solver<Board> {
     }
 
     @Override
-    public String get(Board board) {
+    public String get(ClientBoard board) {
 
         if (!board.getIsAlive()) {
             setFinish(board);
@@ -112,7 +112,7 @@ public class NeuroSolver implements Solver<Board> {
         }
     }
 
-    private float[] toInputs(Board board) {
+    private float[] toInputs(ClientBoard board) {
 
         char[][] field = board.getField();
         if (field != null) {
@@ -152,7 +152,7 @@ public class NeuroSolver implements Solver<Board> {
                 //"http://epruryaw0537.moscow.epam.com:23345/codenjoy-contest/board/player/quriyqkxsa6923cqr6li?code=1345206823804532213",
 
                 solver,
-                new Board());
+                new ClientBoard());
         return solver;
     }
 
@@ -163,7 +163,7 @@ public class NeuroSolver implements Solver<Board> {
         return score;
     }
 
-    public synchronized void setFinish(Board board) {
+    public synchronized void setFinish(ClientBoard board) {
         score = board.getCurrentScore();
         setGene(null);
         isFinished = true;

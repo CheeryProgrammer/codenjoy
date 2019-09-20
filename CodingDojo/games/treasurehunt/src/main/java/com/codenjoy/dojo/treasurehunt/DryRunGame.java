@@ -24,7 +24,7 @@ package com.codenjoy.dojo.treasurehunt;
 
 import com.codenjoy.dojo.client.KeyboardSolver;
 import com.codenjoy.dojo.client.LocalGameRunner;
-import com.codenjoy.dojo.treasurehunt.client.Board;
+import com.codenjoy.dojo.treasurehunt.client.ai.Board;
 import com.codenjoy.dojo.treasurehunt.services.GameRunner;
 
 /**

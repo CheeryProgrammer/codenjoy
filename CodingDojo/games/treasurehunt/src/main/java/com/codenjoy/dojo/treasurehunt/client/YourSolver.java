@@ -33,13 +33,13 @@ import com.codenjoy.dojo.services.Direction;
 /**
  * User: your name
  */
-public class YourSolver implements Solver<Board> {
+public class YourSolver implements Solver<ClientBoard> {
 
     boolean b;
     boolean isFinished = false;
 
     @Override
-    public String get(Board board) {
+    public String get(ClientBoard board) {
         //Direction.ACT;
 
         b = !b;
@@ -52,7 +52,7 @@ public class YourSolver implements Solver<Board> {
                 "http://localhost:8080/codenjoy-contest/board/player/quriyqkxsa6923cqr6li?code=1345206823804532213",
                 //"http://epruryaw0537.moscow.epam.com:23345/codenjoy-contest/board/player/quriyqkxsa6923cqr6li?code=1345206823804532213",
                 new YourSolver(),
-                new Board());
+                new ClientBoard());
     }
 
 

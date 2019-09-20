@@ -23,10 +23,9 @@ package com.codenjoy.dojo.treasurehunt;
  */
 
 
-import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.LocalGameRunner;
 import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.treasurehunt.client.Board;
+import com.codenjoy.dojo.treasurehunt.client.ai.Board;
 import com.codenjoy.dojo.treasurehunt.client.ai.AISolver;
 import com.codenjoy.dojo.treasurehunt.services.GameRunner;
 import com.codenjoy.dojo.services.Dice;
@@ -93,7 +92,7 @@ public class SmokeTest {
                     add(new AISolver(dice));
                     add(new AISolver(dice));
                 }},
-                new LinkedList<ClientBoard>(){{
+                new LinkedList<com.codenjoy.dojo.client.ClientBoard>(){{
                     add(new Board());
                     add(new Board());
                 }});

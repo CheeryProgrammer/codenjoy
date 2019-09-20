@@ -26,6 +26,7 @@ package com.codenjoy.dojo.treasurehunt.client;
 import com.codenjoy.dojo.services.Direction;
 import com.codenjoy.dojo.client.Solver;
 import com.codenjoy.dojo.services.Dice;
+import com.codenjoy.dojo.treasurehunt.client.ai.Board;
 import org.junit.Before;
 import org.junit.Test;
 

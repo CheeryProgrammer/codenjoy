@@ -40,7 +40,7 @@ import java.util.List;
  * {@see Dice} что приходит через конструктор).
  * Для его запуска воспользуйся методом {@see ApofigSolver#main}
  */
-public class AISolver implements Solver<AiBoard> {
+public class AISolver implements Solver<Board> {
 
     private DeikstraFindWay way;
     private Dice dice;
@@ -50,7 +50,7 @@ public class AISolver implements Solver<AiBoard> {
         this.way = new DeikstraFindWay();
     }
 
-    public DeikstraFindWay.Possible possible(AiBoard board) {
+    public DeikstraFindWay.Possible possible(Board board) {
         return new DeikstraFindWay.Possible() {
             @Override
             public boolean possible(Point from, final Direction where) {
@@ -79,7 +79,7 @@ public class AISolver implements Solver<AiBoard> {
     }
 
     @Override
-    public String get(final AiBoard board) {
+    public String get(final Board board) {
         if (!board.isAlive()) return "";
         List<Direction> result = getDirections(board);
         if (result.isEmpty()) return "";
@@ -89,7 +89,7 @@ public class AISolver implements Solver<AiBoard> {
         return toGo.toString();
     }
 
-    public List<Direction> getDirections(AiBoard board) {
+    public List<Direction> getDirections(Board board) {
         int size = board.size();
         if (enemiesNear(board)) {
             return Arrays.asList(Direction.random(dice));
@@ -102,7 +102,7 @@ public class AISolver implements Solver<AiBoard> {
     }
 
     // TODO fix Deikstra find way
-    private boolean enemiesNear(AiBoard board) {
+    private boolean enemiesNear(Board board) {
         Point me = board.getMe();
         Point atLeft = Direction.LEFT.change(me);
         Point atRight = Direction.RIGHT.change(me);

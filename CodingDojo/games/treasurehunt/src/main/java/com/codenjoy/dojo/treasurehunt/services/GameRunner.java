@@ -23,10 +23,9 @@ package com.codenjoy.dojo.treasurehunt.services;
  */
 
 
-import com.codenjoy.dojo.client.ClientBoard;
 import com.codenjoy.dojo.client.Solver;
-import com.codenjoy.dojo.treasurehunt.client.Board;
 import com.codenjoy.dojo.treasurehunt.client.ai.AISolver;
+import com.codenjoy.dojo.treasurehunt.client.ai.Board;
 import com.codenjoy.dojo.treasurehunt.model.*;
 import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.multiplayer.GameField;
@@ -135,7 +134,7 @@ public class GameRunner extends AbstractGameType implements GameType {
     }
 
     @Override
-    public Class<? extends ClientBoard> getBoard() {
+    public Class<? extends Board> getBoard() {
         return Board.class;
     }
 

@@ -28,7 +28,7 @@ import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.treasurehunt.model.Elements;
 import org.json.JSONObject;
 
-public class AiBoard extends AbstractBoard<Elements> {
+public class Board extends AbstractBoard<Elements> {
 
     private boolean isAlive;
     private int currentScore;
