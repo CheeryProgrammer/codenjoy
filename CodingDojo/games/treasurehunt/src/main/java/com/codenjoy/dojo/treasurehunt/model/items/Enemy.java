@@ -47,8 +47,8 @@ public class Enemy extends PointImpl implements State<Elements, Player>, Tickabl
         this.way = new DeikstraFindWay();
     }
 
-    public Enemy(Point point, Field field) {
-        super(point);
+    public Enemy(Field field) {
+        super(field.getFreeRandom());
         this.field = field;
         direction = Direction.random();
         this.way = new DeikstraFindWay();

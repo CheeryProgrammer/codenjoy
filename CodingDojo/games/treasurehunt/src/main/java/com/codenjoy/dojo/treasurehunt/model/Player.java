@@ -71,4 +71,8 @@ public class Player extends GamePlayer<Hero, Field> {
         }
         super.event(ev.withCurrentScore(currentScore));
     }
+
+    public void clearScore(){
+        currentScore = 0;
+    }
 }

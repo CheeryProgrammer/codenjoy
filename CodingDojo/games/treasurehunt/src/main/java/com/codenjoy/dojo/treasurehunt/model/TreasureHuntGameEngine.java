@@ -24,9 +24,11 @@ package com.codenjoy.dojo.treasurehunt.model;
 
 
 import com.codenjoy.dojo.treasurehunt.model.items.*;
+import com.codenjoy.dojo.treasurehunt.services.DifficultyManager;
 import com.codenjoy.dojo.treasurehunt.services.Events;
 import com.codenjoy.dojo.services.*;
 import com.codenjoy.dojo.services.printer.BoardReader;
+import com.codenjoy.dojo.treasurehunt.services.StepProbabilityResolver;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,8 +52,7 @@ public class TreasureHuntGameEngine implements Field {
     private Dice dice;
 
     private Level level;
-
-    private boolean skipEnemyStep;
+    private DifficultyManager difficultyManager;
 
     public TreasureHuntGameEngine(Level level, Dice dice) {
         this.dice = dice;
@@ -62,6 +63,7 @@ public class TreasureHuntGameEngine implements Field {
         size = level.getSize();
         enemies = new LinkedList<>();
         this.level = level;
+        difficultyManager = new DifficultyManager(this, dice);
     }
 
     /**
@@ -69,9 +71,12 @@ public class TreasureHuntGameEngine implements Field {
      */
     @Override
     public void tick() {
-        skipEnemyStep = !skipEnemyStep;
-        if(player.getCurrentScore() > 30 || skipEnemyStep )
-            enemies.forEach(Enemy::tick);
+        difficultyManager.prepare(this.enemies, player.getCurrentScore());
+        StepProbabilityResolver stepResolver = difficultyManager.getStepResolver();
+        enemies.forEach(enemy -> {
+            if(stepResolver.shouldGo())
+                enemy.tick();
+        });
 
         Hero hero = player.getHero();
 
@@ -105,30 +110,15 @@ public class TreasureHuntGameEngine implements Field {
 
         if (!hero.isAlive()) {
             player.event(Events.DEAD);
+            this.enemies.clear();
         }
 
-        correctDifficulty(player.getCurrentScore());
+        difficultyManager.correctEnemyCount();
     }
 
-    private void correctDifficulty(int currentScore) {
-        if(currentScore < 50){
-            correctEnemiesCount(1);
-            return;
-        }
-        if(currentScore < 100){
-            correctEnemiesCount(2);
-            return;
-        }
-        correctEnemiesCount(3);
-    }
-
-    private void correctEnemiesCount(int desiredCount){
-        while(enemies.size() < desiredCount) {
-            enemies.add(new Enemy(getFreeRandom(), this));
-        }
-        while(enemies.size() > desiredCount) {
-            enemies.remove(enemies.size() - 1);
-        }
+    @Override
+    public void clearScore(){
+        player.clearScore();
     }
 
     public int size() {
