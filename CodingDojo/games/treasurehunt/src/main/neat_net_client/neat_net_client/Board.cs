@@ -22,15 +22,32 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Json.Net;
+using System.Runtime.Serialization;
 
 namespace neat_net_client
 {
     public class Board
     {
+        [JsonProperty(PropertyName = "field")]
         private String _boardString;
+        [JsonProperty(PropertyName = "currentScore")]
         private int _score;
+        [JsonProperty(PropertyName = "isAlive")]
         private bool _isAlive;
         private int[] _board;
+
+        [OnDeserialized]
+        internal void TranslateFieldToIntArray(StreamingContext ctx)
+        {
+            if (!_isAlive)
+                return;
+
+            _board = new int[_boardString.Length];
+            for (int i = 0; i < _boardString.Length; i++)
+            {
+                _board[i] = GetIntValueByChar(_boardString[i]);
+            }
+        }
 
         /// <summary>
         /// В данном методе описана логика трансляции доски с сервера в сигналы для нейронной сети
@@ -54,47 +71,6 @@ namespace neat_net_client
             }
 
             return 0;
-        }
-
-        public Board(String boardString)
-        {
-            try
-            {
-                int indexOfIsGameOver = boardString.IndexOf("isAlive");
-                int indexOfScore = boardString.IndexOf("currentScore"); 
-                int indexOfField = boardString.IndexOf("field");
-                _isAlive = Boolean.Parse(
-                    boardString.Substring(
-                        indexOfIsGameOver + 8, 
-                        boardString.IndexOf(",", indexOfIsGameOver) - (indexOfIsGameOver + 8)
-                    )
-                );
-                _score = Int32.Parse(
-                    boardString.Substring(
-                        indexOfScore + 13,
-                        boardString.IndexOf(",", indexOfScore) - (indexOfScore + 13)
-                    )
-                );
-
-                _boardString = boardString.Substring(
-                        indexOfField + 7,
-                        boardString.IndexOf("}", indexOfField + 7) - (indexOfField + 8)
-                    );
-            }
-            catch (Exception exc)
-            {
-                throw;
-            }
-            
-
-            if (!_isAlive)
-                return;
-
-            _board = new int[_boardString.Length];
-            for (int i = 0; i < _boardString.Length; i++)
-            {
-                _board[i] = GetIntValueByChar(_boardString[i]);
-            }
         }
 
         public int Score

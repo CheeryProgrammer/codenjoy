@@ -24,6 +24,7 @@ using System.Web;
 using System.Linq;
 using System.Threading;
 using WebSocketSharp;
+using Newtonsoft.Json;
 
 namespace neat_net_client
 {
@@ -79,7 +80,7 @@ namespace neat_net_client
                 else
                 {
                     var boardString = response.Substring(ResponsePrefix.Length);
-                    _board = new Board(boardString);
+                    _board = JsonConvert.DeserializeObject<Board>(boardString);
 
                     _semaphore.Set();
                 }
