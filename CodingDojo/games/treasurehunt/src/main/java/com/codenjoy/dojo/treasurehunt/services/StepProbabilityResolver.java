@@ -34,7 +34,7 @@ public class StepProbabilityResolver {
     }
 
     public boolean shouldGo(){
-        System.out.println(probability);
+        //System.out.println(probability);
         return dice.next(101) <= probability;
     }
 }
