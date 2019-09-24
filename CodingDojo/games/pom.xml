@@ -278,6 +278,7 @@
                         <canUpdateLicense>false</canUpdateLicense>
                         <excludes>
                             <exclude>**/*.json</exclude>
+                            <exclude>**/*.properties</exclude>
                         </excludes>
                     </configuration>
                     <executions>
