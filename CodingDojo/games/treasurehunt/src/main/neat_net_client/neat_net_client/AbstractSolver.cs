@@ -114,7 +114,7 @@ namespace neat_net_client
 
         private static string GetWebSocketUrl(string userName, string code, string server)
         {
-            return string.Format("ws://{0}/codenjoy-contest/ws?user=vrvm40aetmndbdzyl7uo&code=1",
+            return string.Format("ws://{0}/codenjoy-contest/ws?user={1}&code={2}",
                             server,
                             Uri.EscapeDataString(userName),
                             code);

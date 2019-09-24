@@ -44,7 +44,8 @@ namespace neat_net_client
             //Задавайте здесь url сервера, который будете использовать для обучения. По умолчанию стоит локальный сервер
             //так как на боевом сервере есть задержка минимум в 500 мс, что затормозит обучение сильно
             string serverUrl = "http://localhost:8080/";
-            var neuroSolver = new NeuroSolver(serverUrl);
+            //serverUrl = "http://epruryaw0537.moscow.epam.com:8080/codenjoy-contest/board/player/vb850x2lc2sf62cfp112?code=8843976456836933679";
+			var neuroSolver = new NeuroSolver(serverUrl);
             //Здесь активируется соединение по сокетам с выбранным сервером
             neuroSolver.Play();
 
